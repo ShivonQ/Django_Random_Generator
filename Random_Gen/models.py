@@ -13,6 +13,10 @@ class TreasureCoinsBaseValue(models.Model):
     coins_multiplier = models.IntegerField()
     coins_type = models.CharField(max_length=10)
 
+    def __str__(self):
+        rep = 'lvl:'+str(self.level)+" type:"+self.coins_type
+        return rep
+
 
 class TreasureGoodsBaseValue(models.Model):
     level = models.IntegerField()
