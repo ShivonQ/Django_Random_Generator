@@ -6,11 +6,11 @@ from random import randint
 class TreasureCoinsBaseValue(models.Model):
     level = models.IntegerField()
 
-    coins_percent_lower=models.IntegerField()
-    coins_percent_upper = models.IntegerField()
-    coins_number_of_die = models.IntegerField()
-    coins_die_size = models.IntegerField()
-    coins_multiplier = models.IntegerField()
+    percent_lower=models.IntegerField()
+    percent_upper = models.IntegerField()
+    number_of_die = models.IntegerField()
+    die_size = models.IntegerField()
+    multiplier = models.IntegerField()
     coins_type = models.CharField(max_length=10)
 
     def __str__(self):
@@ -20,10 +20,10 @@ class TreasureCoinsBaseValue(models.Model):
 
 class TreasureGoodsBaseValue(models.Model):
     level = models.IntegerField()
-    goods_percent_lower = models.IntegerField()
-    goods_percent_upper = models.IntegerField()
-    goods_number_of_die = models.IntegerField()
-    goods_die_size = models.IntegerField()
+    percent_lower = models.IntegerField()
+    percent_upper = models.IntegerField()
+    number_of_die = models.IntegerField()
+    die_size = models.IntegerField()
     goods_type = models.CharField(max_length=3)
 
     def __str__(self):
@@ -34,11 +34,11 @@ class TreasureGoodsBaseValue(models.Model):
 
 class TreasureItemsBaseResults(models.Model):
     level = models.IntegerField()
-    items_percent_lower = models.IntegerField()
-    items_percent_upper = models.IntegerField()
+    percent_lower = models.IntegerField()
+    percent_upper = models.IntegerField()
 
-    items_number_of_die = models.IntegerField()
-    items_die_size = models.IntegerField()
+    number_of_die = models.IntegerField()
+    die_size = models.IntegerField()
 
     items_type_mundane = models.BooleanField()
     items_type_minor = models.BooleanField()

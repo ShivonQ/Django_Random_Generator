@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import *
+
+from Random_Gen.models import *
 
 # Register your models here.
 admin.site.register(TreasureCoinsBaseValue)
