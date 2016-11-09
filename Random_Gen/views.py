@@ -1,5 +1,5 @@
 from django.shortcuts import *
-
+import pdb
 from Random_Gen.models import *
 
 coins = TreasureCoinsBaseValue
@@ -8,7 +8,9 @@ items = TreasureItemsBaseResults
 base_results=[coins,goods,items]
 
 def treasure_result(request):
+    pdb.set_trace()
     treasure_result = []
+    print(request.json())
     for model in base_results:
 
         dice_roll = randint(1, 100)
