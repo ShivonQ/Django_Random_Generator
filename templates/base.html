@@ -15,7 +15,7 @@
         <div class="content container">
             <div class="row">
                 <div class="col-md-8">
-                    <form action = "{% url "Random_Gen:treasure_result"  form.enc_level %}" method="post">{% csrf_token %}
+                    <form action = "{% url "Random_Gen:treasure_result"  1 %}" method="GET">
 
 {#                        <input type="text" hidden="hidden" value="{{ csrf_token }}" name="csrf_token" disabled="">#}
                         <label for="enc_level">Encounter Level :: </label>

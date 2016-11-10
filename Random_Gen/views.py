@@ -8,6 +8,8 @@ items = TreasureItemsBaseResults
 base_results=[coins,goods,items]
 
 def treasure_result(request):
+    resp = HttpResponse.content
+    print(resp)
     pdb.set_trace()
     treasure_result = []
     print(request.json())
