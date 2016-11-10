@@ -25,6 +25,8 @@ def treasure_result(request):
 
         # for the items one, same first step, then check for the 'True' value in the 4 booleans.
         # Depending on which is True make that the item type
+
+        # all three are packed into a dictionary and sent to the html page to be displayed, maybe with a title.
         dice_roll = randint(1, 100)
         # model.objects
         these_models = model.objects.filter(level=enc_level).values()
