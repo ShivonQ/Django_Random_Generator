@@ -1,5 +1,5 @@
 from django.shortcuts import *
-import pdb
+# import pdb
 from Random_Gen.models import *
 
 coins = TreasureCoinsBaseValue
@@ -7,9 +7,10 @@ goods = TreasureGoodsBaseValue
 items = TreasureItemsBaseResults
 base_results=[coins,goods,items]
 
+
 def treasure_result(request):
     if request.method == 'POST':
-        level = request.POST.get('enc_level', 1)
+        level = request.POST.get('enc_level',1)
     else:
         level = 1
 
@@ -17,7 +18,7 @@ def treasure_result(request):
     for model in base_results:
 
         dice_roll = randint(1, 100)
-        this_model = (model.objects.where('level')==level)
+        this_model = (model.objects.filter(level == level))
         print(this_model)
         treasure_result.append(this_model)
 
