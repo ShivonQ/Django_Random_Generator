@@ -1,10 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<p>HEY YOU ARE SEEING THE TREASURE RESULT SECTION!!!!!!!!!!</p>
+{% for thing in result %}
+  <p>{{ thing }}</p>
+{% endfor %}
 {#    {% result %}#}
-{% if len.result > 0 %}
+    {% if result|length > 0 %}
 
-{% endif %}
+        <p>HEY YOU ARE SEEING THE TREASURE RESULT SECTION!!!!!!!!!!</p>
+    {% endif %}
 
 {% endblock %}
