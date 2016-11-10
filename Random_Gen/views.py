@@ -8,13 +8,15 @@ items = TreasureItemsBaseResults
 base_results=[coins,goods,items]
 
 def treasure_result(request):
-    pdb.set_trace()
+    if request.method == 'POST':
+        level = request.POST.get('enc_level', 1)
+    else:
+        level = 1
+
     treasure_result = []
-    print(request.json())
     for model in base_results:
 
         dice_roll = randint(1, 100)
-        level = request.level
         this_model = (model.objects.where('level')==level)
         print(this_model)
         treasure_result.append(this_model)
