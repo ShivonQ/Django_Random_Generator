@@ -14,7 +14,7 @@ def treasure_result(request):
     else:
         enc_level = 1
 
-    result = {'dict':[]}
+    result = {'result':[]}
     # second_list = []
     for model in base_results:
 
@@ -26,7 +26,7 @@ def treasure_result(request):
             p_up = thing['percent_upper']
             p_dn = thing['percent_lower']
             if dice_roll>=p_dn and dice_roll<=p_up:
-                result['dict'].append(thing)
+                result['result'].append(thing)
                 # print(these_models)
         # result.append(these_models)
 
