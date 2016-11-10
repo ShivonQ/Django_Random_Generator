@@ -5,3 +5,6 @@ Django_Random_Generator/__pycache__/
 Random_Gen/__pycache__/
 Random_Gen/migrations/__pycache__/
 
+.idea/inspectionProfiles/
+backup_data.sql
+temp_dataStore.csv
