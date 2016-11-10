@@ -23,7 +23,8 @@ def treasure_result(request):
 
         # foor the goods same first step, different second step, instead just see what string is there "art' or 'gem'
 
-        # for the items one, same first step, then check for the 'True' value in the 4 booleans.  Depending on which is True make that the item type
+        # for the items one, same first step, then check for the 'True' value in the 4 booleans.
+        # Depending on which is True make that the item type
         dice_roll = randint(1, 100)
         # model.objects
         these_models = model.objects.filter(level=enc_level).values()
