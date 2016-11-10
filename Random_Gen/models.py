@@ -46,7 +46,7 @@ class TreasureItemsBaseResults(models.Model):
     items_type_major = models.BooleanField()
 
     def __str__(self):
-        rep = 'Level: '+str(self.level)+" | range:"+str(self.items_percent_lower)+'-'+str(self.items_percent_upper)
+        rep = 'Level: '+str(self.level)+" | range:"+str(self.percent_lower)+'-'+str(self.percent_upper)
         return rep
 
 
@@ -60,7 +60,7 @@ class MundaneItemBaseTable(models.Model):
     isToolOrGear = models.BooleanField()
 
     def __str__(self):
-        rep = "Percent Range:"+str(self.mundane_percent_lower)+'-'+str(self.mundane_percent_upper)
+        rep = "Percent Range:"+str(self.percent_lower)+'-'+str(self.percent_upper)
         return rep
 
 class MundaneAlchemical(models.Model):

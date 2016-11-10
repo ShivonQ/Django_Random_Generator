@@ -10,19 +10,20 @@ base_results=[coins,goods,items]
 
 def treasure_result(request):
     if request.method == 'POST':
-        level = request.POST.get('enc_level',1)
+        enc_level = request.POST.get('enc_level',1)
     else:
-        level = 1
+        enc_level = 1
 
-    treasure_result = []
+    result = []
     for model in base_results:
 
         dice_roll = randint(1, 100)
-        this_model = (model.objects.filter(level == level))
+        model.objects
+        this_model = model(level=enc_level)
         print(this_model)
-        treasure_result.append(this_model)
+        result.append(this_model)
 
-    return render(request, 'treasure_result.html', treasure_result)
+    return render(request, 'treasure_result.html', result)
 
 def base(request):
     title = {'title': 'Welcome to the Treasure Generator!'}
