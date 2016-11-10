@@ -6,7 +6,7 @@ from random import randint
 class TreasureCoinsBaseValue(models.Model):
     level = models.IntegerField()
 
-    percent_lower=models.IntegerField()
+    percent_lower = models.IntegerField()
     percent_upper = models.IntegerField()
     number_of_die = models.IntegerField()
     die_size = models.IntegerField()
@@ -29,7 +29,6 @@ class TreasureGoodsBaseValue(models.Model):
     def __str__(self):
         rep = 'Level: '+str(self.level)+" | type:"+self.goods_type
         return rep
-
 
 
 class TreasureItemsBaseResults(models.Model):
