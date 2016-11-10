@@ -14,16 +14,22 @@ def treasure_result(request):
     else:
         enc_level = 1
 
-    result = []
+    result = {'dict':[]}
+    # second_list = []
     for model in base_results:
 
         dice_roll = randint(1, 100)
         # model.objects
-        these_models = model(level=enc_level)
+        these_models = model.objects.filter(level=enc_level).values()
+
         for thing in these_models:
-            print(thing)
-        print(this_model)
-        result.append(this_model)
+            p_up = thing['percent_upper']
+            p_dn = thing['percent_lower']
+            if dice_roll>=p_dn and dice_roll<=p_up:
+                result['dict'].append(thing)
+                # print(these_models)
+        # result.append(these_models)
+
 
     return render(request, 'treasure_result.html', result)
 
