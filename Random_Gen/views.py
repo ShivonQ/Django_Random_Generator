@@ -17,7 +17,13 @@ def treasure_result(request):
     result = {'result':[]}
     # second_list = []
     for model in base_results:
+        # for model.coins take die size and number of die, for each number in number_of_die:randint(1,die_size)
+        # add the die rolls together and multiply them by the multiplier
+        # add on the coin_type, pack into a dictionary
 
+        # foor the goods same first step, different second step, instead just see what string is there "art' or 'gem'
+
+        # for the items one, same first step, then check for the 'True' value in the 4 booleans.  Depending on which is True make that the item type
         dice_roll = randint(1, 100)
         # model.objects
         these_models = model.objects.filter(level=enc_level).values()
