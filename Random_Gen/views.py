@@ -1,6 +1,5 @@
 from django.shortcuts import render
 # from django.shortcuts import *
-# import pdb
 from Random_Gen.models import *
 from django.db import models
 from .models import TreasureItemsBaseResults
@@ -18,8 +17,7 @@ def treasure_result(request, item=''):
     else:
         encounter_level = 1
 
-    # result = {'result': []}
-    # second_list = []
+    treasure = {'treasure': []}
     for index in range(1, len(base_results)):
         #
         random_percentage = randint(1, 100)
@@ -29,36 +27,14 @@ def treasure_result(request, item=''):
             get_coin_result(coin)
 
         if index == 1:
-
-            get_goods_result()
+            good = get_model(random_percentage, encounter_level, goods)
+            get_goods_result(good)
 
         if index == 2:
             item = get_model(random_percentage, encounter_level, items)
             item = get_item_result(item)
 
-        # for model.coins take die size and number of die, for each number in number_of_die:randint(1,die_size)
-        # add the die rolls together and multiply them by the multiplier
-        # add on the coin_type, pack into a dictionary
-
-        # for the goods same first step, different second step, instead just see what string is there 'art' or 'gem'
-
-        # for the items one, same first step, then check for the 'True' value in the 4 booleans.
-        # Depending on which is True make that the item type
-
         # all three are packed into a dictionary and sent to the html page to be displayed, maybe with a title.
-
-    # model.objects
-
-    # result['result'].append(get_item_result(dice_roll, encounter_level))
-    # these_models = model.objects.filter(level=encounter_level).values()
-    #
-    # for thing in these_models:
-    #     p_up = thing['percent_upper']
-    #     p_dn = thing['percent_lower']
-    #     if p_dn <= dice_roll <= p_up:
-    #         result['result'].append(thing)
-    #         # print(these_models)
-    # # result.append(these_models)
 
     return render(request, 'treasure_result.html', {"item": item})
 
@@ -70,7 +46,8 @@ def get_model(random_percentage, encounter_level, model):
             return result
 
 
-def get_goods_result():
+# for the goods same first step, different second step, instead just see what string is there 'art' or 'gem'
+def get_goods_result(good):
     pass
 
 
@@ -91,19 +68,14 @@ def get_item_result(item, item_type=''):
     return {'item_type': item_type}
 
 
+# for model.coins take die size and number of die, for each number in number_of_die:randint(1,die_size)
+# add the die rolls together and multiply them by the multiplier
+# add on the coin_type, pack into a dictionary
 def get_coin_result(coin):
-    # possible_coin_rows = items.objects.filter(level=encounter_level).values()
-    # selected_coin = None
-    # #
-    # for coin in coins.objects.filter(level=encounter_level).values():
-    #     #
-    #     if coin['percent_lower'] <= percentage <= coin['percent_upper']:
-    #         selected_coin = coin
-    #         # item_id = item['id']
-
     number_of_die = coin['number_of_die']
     die_size = coin['die_size']
     multiplier = coin['multiplier']
+    coin_type = coin['coins_type']
 
     # for each dice in die, randint(1, die_size)
     roll_total = 0
@@ -114,6 +86,8 @@ def get_coin_result(coin):
 
     # multiply them by the multiplier
     result = roll_total * multiplier
+    coins_type = str(result).join(coin_type)
+    return {'coin_type': coins_type}
 
 
 def base(request):
