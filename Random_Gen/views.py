@@ -4,6 +4,7 @@ from Random_Gen.models import *
 from django.db import models
 from .models import TreasureItemsBaseResults
 from .models import *
+from random import randint
 
 coins = TreasureCoinsBaseValue
 goods = TreasureGoodsBaseValue
@@ -16,27 +17,28 @@ def treasure_result(request, item=''):
         encounter_level = request.POST.get('enc_level', 1)
     else:
         encounter_level = 1
-
-    treasure = {'treasure': []}
-    for index in range(1, len(base_results)):
+    coinsval=''
+    goodsval=None
+    itemsval=''
+    for index in range(0, len(base_results)):
         #
         random_percentage = randint(1, 100)
 
         if index == 0:
             coin = get_model(random_percentage, encounter_level, coins)
-            get_coin_result(coin)
+            coinsval=(get_coin_result(coin))
 
         if index == 1:
             good = get_model(random_percentage, encounter_level, goods)
-            get_goods_result(good)
+            goodsval==(get_goods_result(good))
 
         if index == 2:
             item = get_model(random_percentage, encounter_level, items)
-            item = get_item_result(item)
+            itemsval=(get_item_result(item))
 
         # all three are packed into a dictionary and sent to the html page to be displayed, maybe with a title.
 
-    return render(request, 'treasure_result.html', {"item": item})
+    return render(request, 'treasure_result.html',{'treasure': {'coins':coinsval, 'goods':goodsval, 'items':itemsval} } )
 
 
 def get_model(random_percentage, encounter_level, model):
@@ -64,8 +66,10 @@ def get_item_result(item, item_type=''):
             return item_type
         else:
             continue
+    if item_type == '':
+        item_type = 'None'
 
-    return {'item_type': item_type}
+    return item_type
 
 
 # for model.coins take die size and number of die, for each number in number_of_die:randint(1,die_size)
@@ -86,8 +90,12 @@ def get_coin_result(coin):
 
     # multiply them by the multiplier
     result = roll_total * multiplier
-    coins_type = str(result).join(coin_type)
-    return {'coin_type': coins_type}
+    if result == 0:
+        coin_type='None'
+        coins_total = 'No Coins'
+    else:
+        coins_total = str(result)+" "+coin_type
+    return coins_total
 
 
 def base(request):

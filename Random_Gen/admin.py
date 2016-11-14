@@ -6,6 +6,8 @@ from Random_Gen.models import *
 admin.site.register(TreasureCoinsBaseValue)
 admin.site.register(TreasureGoodsBaseValue)
 admin.site.register(TreasureItemsBaseResults)
+
+
 admin.site.register(MundaneItemBaseTable)
 admin.site.register(MundaneAlchemical)
 admin.site.register(MundaneArmor)

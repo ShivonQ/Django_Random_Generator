@@ -1,7 +1,4 @@
 from django.db import models
-from random import randint
-# Create your models here.
-
 
 class TreasureCoinsBaseValue(models.Model):
     level = models.IntegerField()
