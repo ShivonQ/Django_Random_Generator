@@ -62,6 +62,7 @@ class MundaneItemBaseTable(models.Model):
         rep = "Percent Range:"+str(self.percent_lower)+'-'+str(self.percent_upper)
         return rep
 
+
 class MundaneAlchemical(models.Model):
     percent_lower = models.IntegerField()
     percent_upper = models.IntegerField()
@@ -111,6 +112,7 @@ class MundaneWeapons(models.Model):
         rep = "Percent Range:"+str(self.percent_lower)+'-'+str(self.percent_upper)+' Name: '+self.item_name
         return rep
 
+
 class MundaneToolOrGear(models.Model):
     percent_lower = models.IntegerField()
     percent_upper = models.IntegerField()
@@ -125,6 +127,7 @@ class MundaneToolOrGear(models.Model):
     def __str__(self):
         rep = "Percent Range:"+str(self.percent_lower)+'-'+str(self.percent_upper)+' Name: '+self.item_name
         return rep
+
 
 class Art(models.Model):
     # All art values are in gp so no money type needed
@@ -217,7 +220,6 @@ class ArmorType(models.Model):
     def __str__(self):
         rep = ' Name: '+self.type +"Percent Range:"+str(self.percent_chance_lower)+'-'+str(self.percent_chance_upper)
         return rep
-
 
 
 class ShieldType(models.Model):

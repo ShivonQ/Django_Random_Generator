@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% for dictionary in result %}
-  <p>{{ dictionary.percent_upper }}</p>
-{% endfor %}
-{#    {% result %}#}
-    {% if result|length > 0 %}
 
-        <p>HEY YOU ARE SEEING THE TREASURE RESULT SECTION!!!!!!!!!!</p>
-    {% endif %}
+{#{% for x in item %}#}
+{#  <p>item_type: {{ x.item_type }}</p>#}
+{#{% endfor %}#}
+    <p>Item Type: {{ item }}</p>
+{#    {% if result|length > 0 %}#}
+{##}
+{#        <p>HEY YOU ARE SEEING THE TREASURE RESULT SECTION!!!!!!!!!!</p>#}
+{#    {% endif %}#}
 
 {% endblock %}
