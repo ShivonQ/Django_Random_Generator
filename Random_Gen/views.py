@@ -12,29 +12,29 @@ items = TreasureItemsBaseResults
 base_results = [coins, goods, items]
 
 
-def treasure_result(request, item=''):
+def treasure_result(request):
     if request.method == 'POST':
         encounter_level = request.POST.get('enc_level', 1)
     else:
         encounter_level = 1
-    coinsval=''
-    goodsval=None
-    itemsval=''
+    coinsval = ''
+    goodsval = ''
+    itemsval = ''
     for index in range(0, len(base_results)):
         #
         random_percentage = randint(1, 100)
 
         if index == 0:
             coin = get_model(random_percentage, encounter_level, coins)
-            coinsval=(get_coin_result(coin))
+            coinsval = (get_coin_result(coin))
 
         if index == 1:
             good = get_model(random_percentage, encounter_level, goods)
-            goodsval==(get_goods_result(good))
+            goodsval = (get_goods_result(good))
 
         if index == 2:
             item = get_model(random_percentage, encounter_level, items)
-            itemsval=(get_item_result(item))
+            itemsval = (get_item_result(item))
 
         # all three are packed into a dictionary and sent to the html page to be displayed, maybe with a title.
 
@@ -50,7 +50,9 @@ def get_model(random_percentage, encounter_level, model):
 
 # for the goods same first step, different second step, instead just see what string is there 'art' or 'gem'
 def get_goods_result(good):
-    pass
+    good_type = good['goods_type']
+    good_type = 'None' if good_type == 'N/A' else good_type
+    return good_type
 
 
 def get_item_result(item, item_type=''):
