@@ -47,8 +47,8 @@ class TreasureItemsBaseResults(models.Model):
 
 
 class MundaneItemBaseTable(models.Model):
-    mundane_percent_lower = models.IntegerField()
-    mundane_percent_upper = models.IntegerField()
+    percent_lower = models.IntegerField()
+    percent_upper = models.IntegerField()
 
     isAlchemical = models.BooleanField()
     isArmor = models.BooleanField()
@@ -128,13 +128,14 @@ class MundaneToolOrGear(models.Model):
 
 class Art(models.Model):
     # All art values are in gp so no money type needed
-    art_percent_lower = models.IntegerField()
-    art_percent_upper = models.IntegerField()
+    percent_lower = models.IntegerField()
+    percent_upper = models.IntegerField()
 
-    art_value_dice_number = models.IntegerField()
-    art_value_dice_size = models.IntegerField()
+    value_dice_number = models.IntegerField()
+    value_dice_size = models.IntegerField()
+    value_multiplier = models.IntegerField()
 
-    art_name = models.CharField(max_length=50)
+    art_name = models.CharField(max_length=800)
 
     def get_val_and_name(self):
         all = [self.art_name, self.art_value_dice_number, self.art_value_dice_size]
@@ -145,14 +146,39 @@ class Art(models.Model):
         return rep
 
 
+class Darkwood(models.Model):
+    percent_lower = models.IntegerField()
+    percent_upper = models.IntegerField()
+
+    type = models.CharField(max_length = 80)
+    value = models.IntegerField()
+
+    def __str__(self):
+        rep = "Percent Range:"+str(self.percent_lower)+'-'+str(self.percent_upper)+' Name: '+self.type
+        return rep
+
+        
+class Masterwork_Shield(models.Model):
+    percent_lower = models.IntegerField()
+    percent_upper = models.IntegerField()
+
+    type = models.CharField(max_length=80)
+    value = models.IntegerField()
+
+    def __str__(self):
+        rep = "Percent Range:"+str(self.percent_lower)+'-'+str(self.percent_upper)+' Name: '+self.type
+        return rep
+
+
 class Gems(models.Model):
     # All gem values are in gp so no money type needed
-    gems_percent_lower = models.IntegerField()
-    gems_percent_upper = models.IntegerField()
-    gem_value_dice_number = models.IntegerField()
-    gem_value_dice_size = models.IntegerField()
+    percent_lower = models.IntegerField()
+    percent_upper = models.IntegerField()
+    value_dice_number = models.IntegerField()
+    value_dice_size = models.IntegerField()
+    value_multiplier = models.IntegerField()
     # will be a long string of gems names, that can be split for final display
-    gem_name = models.CharField(max_length=500)
+    gem_name = models.CharField(max_length=6000)
 
     def get_val_and_name(self):
         all = [self.gem_name, self.gem_value_dice_number, self.gem_value_dice_size]
@@ -219,21 +245,52 @@ class ArmorType(models.Model):
         return rep
 
 
-class ShieldType(models.Model):
-    percent_chance_lower = models.IntegerField()
-    percent_chance_upper = models.IntegerField()
+class BaseMagicItemGenTable(models.Model):
+    minor_percent_chance_lower = models.IntegerField()
+    minor_percent_chance_upper = models.IntegerField()
 
-    type = models.CharField(max_length=120)
-    cost = models.IntegerField()
+    medium_percent_chance_lower = models.IntegerField()
+    medium_percent_chance_upper = models.IntegerField()
+
+    major_percent_chance_lower = models.IntegerField()
+    major_percent_chance_upper = models.IntegerField()
+
+    table_to_use = models.CharField(max_length=300)
+
+    def __str__(self):
+        rep = ' Name: ' + self.table_to_use + " | Minor Range:" + str(self.minor_percent_chance_lower) + '-' + str(
+            self.minor_percent_chance_upper) + ' | ' + \
+              "Medium Range:" + str(self.medium_percent_chance_lower) + '-' + str(
+            self.medium_percent_chance_upper) + ' | ' + \
+              "Major Range:" + str(self.major_percent_chance_lower) + '-' + str(self.major_percent_chance_upper)
+        return rep
+
+class ShieldSpecialAbility(models.Model):
+
+    minor_percent_chance_lower = models.IntegerField()
+    minor_percent_chance_upper = models.IntegerField()
+
+    medium_percent_chance_lower = models.IntegerField()
+    medium_percent_chance_upper = models.IntegerField()
+
+    major_percent_chance_lower = models.IntegerField()
+    major_percent_chance_upper = models.IntegerField()
+
+    item_ability = models.CharField(max_length=120)
+    base_price_modifier = models.IntegerField()
+    base_enhancement_bonus_modifier = models.IntegerField()
 
     def get_cost_and_type(self):
-        c_and_t = [self.type, self.cost]
+        c_and_t = [self.item_ability, self.base_price_modifier]
         return c_and_t
 
     def __str__(self):
-        rep = ' Name: '+self.type +"Percent Range:"+str(self.percent_chance_lower)+'-'+str(self.percent_chance_upper)
+        rep = ' Name: ' + self.item_ability + " | Minor Range:" + str(self.minor_percent_chance_lower) + '-' + str(
+            self.minor_percent_chance_upper) + ' | ' + \
+              "Medium Range:" + str(self.medium_percent_chance_lower) + '-' + str(
+            self.medium_percent_chance_upper) + ' | ' + \
+              "Major Range:" + str(self.major_percent_chance_lower) + '-' + str(self.major_percent_chance_upper)
         return rep
-
 
 class ArmorSpecialAbility(models.Model):
 
@@ -248,6 +305,7 @@ class ArmorSpecialAbility(models.Model):
 
     item_ability = models.CharField(max_length=120)
     base_price_modifier = models.IntegerField()
+    base_enhancement_bonus_modifier = models.IntegerField()
 
     def get_cost_and_type(self):
         c_and_t = [self.item_ability, self.base_price_modifier]
