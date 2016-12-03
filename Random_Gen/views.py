@@ -5,6 +5,7 @@ from django.db import models
 from .models import TreasureItemsBaseResults
 from .models import *
 from random import randint
+from random import choice
 
 coins = TreasureCoinsBaseValue
 goods = TreasureGoodsBaseValue
@@ -22,19 +23,28 @@ def treasure_result(request):
     itemsval = ''
     for index in range(0, len(base_results)):
         #
-        random_percentage = randint(1, 100)
+        random_percentage = d100()
 
         if index == 0:
             coin = get_model(random_percentage, encounter_level, coins)
-            coinsval = (get_coin_result(coin))
+            if coin==None:
+                coinsval = 0
+            else:
+                coinsval = (get_coin_result(coin))
 
         if index == 1:
             good = get_model(random_percentage, encounter_level, goods)
-            goodsval = (get_goods_result(good))
+            if good==None:
+                goodsval=0
+            else:
+                goodsval = (get_goods_result(good))
 
         if index == 2:
             item = get_model(random_percentage, encounter_level, items)
-            itemsval = (get_item_result(item))
+            if item == None:
+                itemsval ='None'
+            else:
+                itemsval = (get_item_result(item))
 
         # all three are packed into a dictionary and sent to the html page to be displayed, maybe with a title.
 
@@ -51,28 +61,103 @@ def get_model(random_percentage, encounter_level, model):
 # for the goods same first step, different second step, instead just see what string is there 'art' or 'gem'
 def get_goods_result(good):
     good_type = good['goods_type']
-    good_type = 'None' if good_type == 'N/A' else good_type
-    return good_type
+    if good_type=='gem':
+        print('GEMS!!!!')
+        result = get_gems(good['die_size'], good['number_of_die'])
+        return result
+    elif good_type == 'art':
+        result = get_art_collection(good['die_size'], good['number_of_die'])
+        return result
+    else:
+        good_type = 'None' if good_type == 'N/A' else good_type
+        return good_type
+
+
+# '''These three methods are to simplify somewhat the creation of a number of items'''
+def d100():
+    roll=randint(1,101)
+    return roll
+
+
+def roll_several_die(die_size, die_num):
+    total=0
+    for num in range(die_num):
+        total+=randint(1, die_size+1)
+    return total
+
+
+def find_value(die_size, die_num, multi):
+    die_results=roll_several_die(die_size,die_num)
+    die_results*=multi
+    return die_results
+
+
+# These two methods determine gem type and value
+def get_gems(die_size,num_die):
+    number_of_gems=roll_several_die(die_size,num_die)
+    gem_dict={'gems':[]}
+    for num in range(number_of_gems):
+        gem = get_gem()
+        gem_dict['gems'].append(gem)
+    return gem_dict
+
+
+def get_gem():
+    dice_roll=d100()
+    gem={'name':'','value':0}
+    gems=Gems.objects.all()
+    for results in gems:
+        if dice_roll >=results.percent_lower and dice_roll<=results.percent_upper:
+            all_gem_names=results.gem_name.split(',')
+            gem['name'] = choice(all_gem_names)
+            gem['value'] = find_value(results.value_dice_size, results.value_dice_number, results.value_multiplier)
+    print(gem)
+    return gem
+
+
+# These two methods determine art value and type
+def get_art_collection(die_size, num_die):
+    number_of_art=roll_several_die(die_size,num_die)
+    art_dict={'art':[]}
+    for num in range(number_of_art):
+        art = get_art()
+        art_dict['art'].append(art)
+    return art_dict
+
+
+def get_art():
+    dice_roll=d100()
+    art={'name':'','value':0}
+    arts=Art.objects.all()
+    for results in arts:
+        if dice_roll >=results.percent_lower and dice_roll<=results.percent_upper:
+            all_art_names=results.art_name.split(',')
+            art['name'] = choice(all_art_names)
+            art['value'] = find_value(results.value_dice_size, results.value_dice_number, results.value_multiplier)
+    print(art)
+    return art
+
 
 
 def get_item_result(item, item_type=''):
+    if item != None:
+        item_types = {'mundane item': item['items_type_mundane'],
+                      'minor item': item['items_type_minor'],
+                      'medium item': item['items_type_medium'],
+                      'major item': item['items_type_major']}
 
-    item_types = {'mundane item': item['items_type_mundane'],
-                  'minor item': item['items_type_minor'],
-                  'medium item': item['items_type_medium'],
-                  'major item': item['items_type_major']}
-
-    for key, boolean in item_types.items():
-        if boolean:
-            item_type = key
-            return item_type
-        else:
-            continue
-    if item_type == '':
+        for key, boolean in item_types.items():
+            if boolean:
+                item_type = key
+                return item_type
+            else:
+                continue
+    if item == None:
         item_type = 'None'
 
     return item_type
-
+# def get_mundane_items():
+#
 
 # for model.coins take die size and number of die, for each number in number_of_die:randint(1,die_size)
 # add the die rolls together and multiply them by the multiplier
