@@ -12,6 +12,17 @@ goods = TreasureGoodsBaseValue
 items = TreasureItemsBaseResults
 base_results = [coins, goods, items]
 
+'''The majority of the methods described below follow a simple formula
+1) what sort of item is it?
+2) how many of them are there
+3) call upon the correct table and get the record for that item
+4) append that result into the overarching results
+5) repeat until there are no more items to be generated
+6) finally render a single JSON dictionary to the treasure_results.html page
+
+
+Future sprints will have a very different way of doing this, as I am working on a more generic way of fetching record information'''
+
 
 def treasure_gen(request):
 
@@ -422,7 +433,7 @@ def get_potions(minMedMaj):
     # structure you will return
     P_or_O = {'name':'','value':0,'isPotion': True}
     if minMedMaj == 0:
-        # grab the elements and then find the one with the right
+        # grab the elements and then find the one with the right percentage chance
         potions = PotionOrOil.objects.all()
         for pot in potions:
             if pot.minor_percent_chance_lower <= d_r <= pot.minor_percent_chance_upper:
@@ -433,6 +444,7 @@ def get_potions(minMedMaj):
     elif minMedMaj == 1:
         potions = PotionOrOil.objects.all()
         for pot in potions:
+            # grab the elements and then find the one with the right percentage chance
             if pot.medium_percent_chance_lower <= d_r <= pot.medium_percent_chance_upper:
                 P_or_O['name'] = pot.name
                 P_or_O['isPotion'] = pot.isPotion
@@ -442,6 +454,7 @@ def get_potions(minMedMaj):
     else:
         potions = PotionOrOil.objects.all()
         for pot in potions:
+            # grab the elements and then find the one with the right percentage chance
             if pot.major_percent_chance_lower <= d_r <= pot.major_percent_chance_upper:
                 P_or_O['name'] = pot.name
                 P_or_O['isPotion'] = pot.isPotion
@@ -457,9 +470,9 @@ def get_ring(minMedMaj):
         print('minor ring')
         rings = PotionOrOil.objects.all()
         for ring in rings:
+            # grab the elements and then find the one with the right percentage chance
             if ring.minor_percent_chance_lower <= d_r <= ring.minor_percent_chance_upper:
                 result['name'] = ring.name
-                result['isPotion'] = ring.isPotion
                 result['value'] = ring.cost
                 return result
 
@@ -467,9 +480,9 @@ def get_ring(minMedMaj):
         print('med ring')
         rings = PotionOrOil.objects.all()
         for ring in rings:
+            # grab the elements and then find the one with the right percentage chance
             if ring.medium_percent_chance_lower <= d_r <= ring.medium_percent_chance_upper:
                 result['name'] = ring.name
-                result['isPotion'] = ring.isPotion
                 result['value'] = ring.cost
                 return result
 
@@ -479,7 +492,6 @@ def get_ring(minMedMaj):
         for ring in rings:
             if ring.major_percent_chance_lower <= d_r <= ring.major_percent_chance_upper:
                 result['name'] = ring.name
-                result['isPotion'] = ring.isPotion
                 result['value'] = ring.cost
                 return result
 
@@ -488,6 +500,7 @@ def get_items(die_size, num_die, minMedMaj):
     number_of_items = roll_several_die(die_size, num_die)
     item_dict = {'items': []}
     for num in range(number_of_items):
+        # this is where the amount of items chosen are generated
         item = roll_root_magic_item_table(minMedMaj)
         item_dict['items'].append(item)
     return item_dict
@@ -497,13 +510,14 @@ def get_armor_and_shields(minMedMaj):
     item = {'name': '', 'type': ''}
     if minMedMaj == 0:
         print('minor item')
-        # TODO: ##############################################################################
+        # here is where things get hairy
         # dice_roll=93
         dice_roll = d100()
         mins = ArmorAndShields.objects.all()
         for record in mins:
+            # find the right record for the % chance
             if record.minor_percent_chance_lower <= dice_roll <= record.minor_percent_chance_upper:
-                #             TODO: specific armor and specific shield triggers go here too!
+                # It might be a specific shield!
                 if 90 <= dice_roll <= 91:
                     spec_shields = SpecificShield.objects.all()
                     d=d100()
@@ -512,6 +526,7 @@ def get_armor_and_shields(minMedMaj):
                             item['name'] = shield.name
                             item['type'] = 'Shield'
                             return item
+                #         OR SPECIFIC ARMOR
                 if 88 <= dice_roll <= 89:
                     spec_arm = SpecificArmor.objects.all()
                     d=d100()
@@ -524,6 +539,7 @@ def get_armor_and_shields(minMedMaj):
                 print(record)
                 # if the record has a special ability then roll the die for Armor or shield again, then for speciali ability
                 if 92 <= dice_roll <= 100:
+                    # do not allow more than one special ability
                     dice_roll = d100()
                     while 92 <= dice_roll <= 100:
                         dice_roll = d100()
@@ -532,12 +548,14 @@ def get_armor_and_shields(minMedMaj):
                     for record_rep in mins:
                         if record_rep.minor_percent_chance_lower <= dice_roll <= record_rep.minor_percent_chance_upper:
                             item['name'] = record_rep.item
+                            # get the type, can prbably be refactored into a new field for these records
                             type = record_rep.item[3:]
                             if type == 'Shield':
                                 item['type'] = get_armor_type(1)
                                 abilities = get_minor_shield_special_abilities(d100())
                                 while None in abilities:
                                     abilities = get_minor_shield_special_abilities(d100())
+                                #     modify the name to incorporate the new ability
                                 if len(abilities) > 1:
                                     item['name'] += ', ' + abilities[0]['ab_name'] + ', ' + abilities[1]['ab_name']
                                 else:
@@ -547,6 +565,7 @@ def get_armor_and_shields(minMedMaj):
                                 abilities = get_minor_armor_special_abilities(d100())
                                 while None in abilities:
                                     abilities = get_minor_shield_special_abilities(d100())
+                                    #     modify the name to incorporate the new ability or abilities
                                 if len(abilities) > 1:
                                     item['name'] += ', ' + abilities[0]['ab_name'] + ', ' + abilities[1]['ab_name']
                                 elif len(abilities) == 1:
@@ -568,6 +587,7 @@ def get_armor_and_shields(minMedMaj):
 
                     return item
     elif minMedMaj == 1:
+        # REPEAT AS ABOVE SO BELOW
         print('medium table')
         dice_roll = d100()
         mins = ArmorAndShields.objects.all()
