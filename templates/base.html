@@ -1,32 +1,31 @@
-{% load staticfiles %}
+
 <html>
-    <head>
-        <title>Treasure</title>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-        <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-{#        <link rel="stylesheet" href="{% static 'css/blog.css' %}">#}
-    </head>
-    <body>
-        <div class="page-header">
+<head>
+    <title>Treasure</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link href='//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    {#        <link rel="stylesheet" href="{% static 'css/blog.css' %}">#}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+<div class="page-header">
 
-            <h1><a href="/">{{ title }}</a></h1>
-        </div>
-        <div class="content container">
-        <a href="/admin">Admin Page</a>
-            <div class="row">
-                <div class="col-md-8">
-                    <form action="{% url "Random_Gen:treasure_result" %}" method="post">{% csrf_token %}
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">RPG Resource</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a href="/treasure_gen">Treasure Generator</a></li>
+      <li><a href="#">Game Blog (Coming Soon)</a></li>
+      <li><a href="#">Knowledge (Coming Soon)</a></li>
+        <li><a href="/admin">Dungeon Master's Screen</a></li>
+    </ul>
+  </div>
+</nav>
+</div>
 
-{#                        <input type="text" hidden="hidden" value="{{ csrf_token }}" name="csrf_token" disabled="">#}
-                        <label for="enc_level">Encounter Level :: </label>
-                        <input type="text" name="enc_level" value="1">
-                        <button type="submit" name="submit">Generate Treasure</button>
-                    </form>
-                    {% block content %}
-                    {% endblock %}
-                </div>
-            </div>
-        </div>
-    </body>
+</body>
 </html>

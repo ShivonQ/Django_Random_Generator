@@ -1,0 +1,19 @@
+{% include 'base.html' %}
+<div class="row">
+    <div class="col-md-8">
+        <form action="{% url "Random_Gen:treasure_result" %}" method="post">{% csrf_token %}
+
+            {#                        <input type="text" hidden="hidden" value="{{ csrf_token }}" name="csrf_token" disabled="">#}
+            <label for="enc_level">Encounter Level :: &nbsp;</label><input type="text" name="enc_level" value="1">
+
+            <label for="noGems">No Gems &nbsp;</label><input type="checkbox" name="noGems">
+            <label for="noArt">No Art &nbsp;</label><input type="checkbox" name="noArt">
+            <label for="noCoins">No Coins &nbsp;</label><input type="checkbox" name="noCoins">
+            <label for="noItems">No Items &nbsp;</label><input type="checkbox" name="noItems">
+
+            <button type="submit" name="submit">Generate Treasure</button>
+        </form>
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>

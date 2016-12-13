@@ -1,22 +1,81 @@
-{% extends 'base.html' %}
+{% extends 'treasure_gen.html' %}
 
 {% block content %}
-<p>Coin Value:{{ treasure.coins }}</p>
-<p>Goods Found:{{ treasure.goods }}</p>
-<p>Items Found:{{ treasure.items }}</p>
-{#{% for x in treasure %}#}
-{#    {% if x == 0 %}#}
-{#        <p>Coins: {{ x.coins }}</p>#}
-{##}
-{#    {% else %}#}
-{#        <p>{{ x }}</p>#}
-{#    {% endif %}#}
-{##}
-{#{% endfor %}#}
-{#    <p>Coins: {{ treasure.coins }}</p>#}
-{#    {% if result|length > 0 %}#}
-{##}
-{#        <p>HEY YOU ARE SEEING THE TREASURE RESULT SECTION!!!!!!!!!!</p>#}
-{#    {% endif %}#}
+<div class="row row-eq-height" style="padding-left: 15px">
+    <div class="result">
+    {% if treasure.coins != "No Coins" %}
+        <div class="col-sm-3 well well-sm result">
+{#            TODO: AJAX call for refresh of this section  #}
+            <h3>Coin Value:{{ treasure.coins }}</h3>
+        </div>
+    {% endif %}
+
+        {% if treasure.goods.art %}
+            <div class="col-md-6 art_collection well well-sm result">
+{#            TODO: AJAX call for a refresh of the goods section   #}
+                <h3>{{ treasure.goods.art|length }} Pieces of Art Found</h3>
+                {% for item in treasure.goods.art %}
+                    <p>{{ item.name }} -:۩:- {{ item.value }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {#if there are gems put them in the gem bag#}
+        {% if treasure.goods.gems %}
+            <div class="col-md-5 gem_bag well well-sm result">
+{#            TODO: AJAX call for refreshing the items    #}
+                <h3>{{ treasure.goods.gems|length }} Gems Found</h3>
+                {% for gem in treasure.goods.gems %}
+                    <p>{{ gem.name }} -:۩:- {{ gem.value }} gp</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    {% if treasure.items != '' %}
+        <div class="col-md-3 well result">
+{#        TODO:   AJAX call for refresh of this thing      #}
+        <h3>Items Found</h3>
+        {% for item in treasure.items.items %}
+        {% if item.A_o_S %}
+            {% for a_o_s in item.A_o_S %}
+                <p>{{ a_o_s.name }}, which is {{ a_o_s.type }}</p>
+            {% endfor %}
+        {% elif item.rods %}
+            {% for rod in item.rods %}
+                <p>A Rod of {{ rod.name }}, worth {{ rod.value }}gp</p>
+            {% endfor %}
+        {% elif item.pots %}
+            {% for pot in item.pots %}
+                {% if pot.isPotion == True %}
+                    <p>Potion of {{ pot.name }}, worth {{ pot.value }}gp</p>
+                {% elif pot.isPotion == False %}
+                    <p>Oil of {{ pot.name }}, worth {{ pot.value }}gp</p>
+                {% endif %}
+            {% endfor %}
+        {% elif item.wands %}
+            {% for wand in item.wands %}
+                <p> Wand of {{ wand.name }}, worth {{ wand.value }}gp</p>
+            {% endfor %}
+        {% elif item.wondrous %}
+            {% for wonder in item.wondrous %}
+                <p>A {{ wonder.name }}, worth {{ wonder.value }}gp</p>
+            {% endfor %}
+        {% elif item.rings %}
+            {% for ring in item.rings %}
+                <p>A ring of {{ ring.name }}, worth {{ ring.value }}gp</p>
+            {% endfor %}
+        {% elif item.staff %}
+            {% for stave in item.staff %}
+                <p>A staff of {{ stave.name }}, worth {{ stave.value }}gp</p>
+            {% endfor %}
+
+    {% endif %}
+
+    {% endfor %}
+    </div>
+
+
+    {% endif %}
+</div>
 
 {% endblock %}
